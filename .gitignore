@@ -20,3 +20,13 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+# C++ Build artifacts
+build/
+*.o
+sobel_serial
+
+# Data and output images
+data/*.png
+data/*.jpg
+data/*.jpeg
