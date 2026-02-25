@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
   std::string input_path = argv[1];
   std::string output_path = argv[2];
 
-  // Read image using STB
   int width, height, channels;
   // Force loaded image to be grayscale (1 channel)
   uint8_t *img_data =
@@ -47,29 +46,24 @@ int main(int argc, char **argv) {
 
   std::cout << "Loaded image: " << width << "x" << height << std::endl;
 
-  // Convert to std::vector for easier management
   size_t img_size = static_cast<size_t>(width) * height;
   std::vector<uint8_t> input_img(img_data, img_data + img_size);
   std::vector<uint8_t> output_img(
       img_size, 0); // Initialize with 0 (black background for borders)
 
-  stbi_image_free(img_data); // Free the STB allocated memory
+  stbi_image_free(img_data);
 
   std::cout << "Starting serial Sobel edge detection..." << std::endl;
 
-  // Start timing
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  // Perform convolution
   sobel_serial(input_img, output_img, width, height);
 
-  // End timing
   auto end_time = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> duration_ms = end_time - start_time;
 
   std::cout << "Execution time: " << duration_ms.count() << " ms" << std::endl;
 
-  // Write output image using STB
   int stride_in_bytes = width; // 1 byte per pixel for grayscale
   if (!stbi_write_png(output_path.c_str(), width, height, 1, output_img.data(),
                       stride_in_bytes)) {
@@ -80,7 +74,6 @@ int main(int argc, char **argv) {
 
   std::cout << "Output saved to " << output_path << std::endl;
 
-  // Optional Validation against a reference image
   if (argc >= 4) {
     std::string ref_path = argv[3];
     int ref_width, ref_height, ref_channels;
