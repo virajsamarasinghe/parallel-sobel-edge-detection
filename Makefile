@@ -21,6 +21,10 @@ PTHREADS_TARGET = $(BUILD_DIR)/sobel_pthreads
 MPI_SRCS = $(SRC_DIR)/sobel_mpi.cpp $(SRC_DIR)/utils.cpp
 MPI_TARGET = $(BUILD_DIR)/sobel_mpi
 
+# ── Hybrid MPI + OpenMP ──
+HYBRID_SRCS = $(SRC_DIR)/sobel_hybrid.cpp $(SRC_DIR)/utils.cpp
+HYBRID_TARGET = $(BUILD_DIR)/sobel_hybrid
+
 all: serial
 
 serial: $(SERIAL_TARGET)
@@ -43,7 +47,12 @@ $(MPI_TARGET): $(MPI_SRCS)
 	@mkdir -p $(BUILD_DIR)
 	$(MPICXX) $(CXXFLAGS) -o $@ $^
 
+hybrid: $(HYBRID_TARGET)
+$(HYBRID_TARGET): $(HYBRID_SRCS)
+	@mkdir -p $(BUILD_DIR)
+	$(MPICXX) $(CXXFLAGS) -fopenmp -o $@ $^
+
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all serial openmp pthreads mpi clean
+.PHONY: all serial openmp pthreads mpi hybrid clean
