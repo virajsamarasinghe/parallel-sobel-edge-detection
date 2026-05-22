@@ -68,7 +68,7 @@ $(MPI_TARGET): $(MPI_SRCS)
 hybrid: $(HYBRID_TARGET)
 $(HYBRID_TARGET): $(HYBRID_SRCS)
 	@mkdir -p $(BUILD_DIR)
-	$(MPICXX) $(CXXFLAGS) -fopenmp -o $@ $^
+	$(MPICXX) $(CXXFLAGS) $(OMP_FLAGS) -o $@ $^
 
 cuda: $(CUDA_TARGET)
 $(CUDA_TARGET): $(CUDA_SRCS)
