@@ -83,7 +83,13 @@ $(GEN4K_TARGET): $(GEN4K_SRCS)
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all serial openmp pthreads mpi hybrid cuda generate_4k clean run run_4k
+dashboard: serial openmp pthreads mpi hybrid cuda
+	@echo "Installing NPM dependencies..."
+	npm install
+	@echo "Starting dashboard server on port 3000..."
+	npm start
+
+.PHONY: all serial openmp pthreads mpi hybrid cuda generate_4k clean run run_4k dashboard
 
 run: serial openmp pthreads
 	@echo "--- Running Serial ---"

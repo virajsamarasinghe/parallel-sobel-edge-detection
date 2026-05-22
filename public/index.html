@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Sobel Edge Detection Benchmark Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <span class="logo-icon">⚡</span>
+                <div>
+                    <h1>Sobel Edge Detection</h1>
+                    <p class="subtitle">Multi-Core Parallel & GPU Benchmarking Dashboard</p>
+                </div>
+            </div>
+            <div class="system-status">
+                <div class="status-item">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">Docker Environment: Active</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot info"></span>
+                    <span class="status-label">4 Cores Assigned</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Left Side: Image Processing -->
+            <section class="panel image-panel">
+                <div class="panel-header">
+                    <h2>Image Viewer & Verification</h2>
+                    <p class="panel-subtitle">Upload a photo and compare the edge-detection results</p>
+                </div>
+
+                <!-- Dropzone / Upload area -->
+                <div class="upload-zone" id="drop-zone">
+                    <input type="file" id="file-input" accept="image/*" class="file-input">
+                    <div class="upload-prompt">
+                        <span class="upload-icon">📤</span>
+                        <h3>Drag & Drop Image Here</h3>
+                        <p>Supports PNG, JPG, JPEG (up to 4K resolution)</p>
+                        <button class="btn btn-primary" id="browse-btn">Browse Files</button>
+                    </div>
+                </div>
+
+                <!-- Processing state -->
+                <div class="loading-state hidden" id="loading-state">
+                    <div class="spinner"></div>
+                    <p>Executing parallel algorithms inside Docker container...</p>
+                    <p class="sub-loading">Running Serial, OpenMP, Pthreads, MPI, Hybrid, and CUDA benchmarks...</p>
+                </div>
+
+                <!-- Comparison viewer (initially hidden) -->
+                <div class="viewer-container hidden" id="viewer-container">
+                    <div class="method-selector">
+                        <label for="method-select">Visualizing Output: </label>
+                        <select id="method-select" class="select-input">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Interactive comparison slider -->
+                    <div class="comparison-slider" id="comparison-slider">
+                        <div class="image-before">
+                            <img id="img-original" src="" alt="Original Image">
+                            <span class="image-badge before-badge">Original</span>
+                        </div>
+                        <div class="image-after" id="image-after">
+                            <img id="img-processed" src="" alt="Processed Image">
+                            <span class="image-badge after-badge" id="processed-badge">Sobel Edge</span>
+                        </div>
+                        <div class="slider-handle" id="slider-handle">
+                            <div class="handle-line"></div>
+                            <div class="handle-button">↔</div>
+                            <div class="handle-line"></div>
+                        </div>
+                    </div>
+
+                    <!-- Image Dimension & Info -->
+                    <div class="image-info">
+                        <span id="img-resolution">Resolution: -</span>
+                        <span id="verification-status" class="verification-badge">Verification: Passed</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Analytics & Metrics -->
+            <section class="panel metrics-panel">
+                <div class="panel-header">
+                    <h2>Analytical Benchmarks</h2>
+                    <p class="panel-subtitle">Execution time and parallel speedup analysis</p>
+                </div>
+
+                <!-- Stats summary grid -->
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-title">Fastest Method</span>
+                        <span class="stat-value" id="fastest-method">-</span>
+                        <span class="stat-desc" id="fastest-time">-</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Max Speedup</span>
+                        <span class="stat-value" id="max-speedup">-</span>
+                        <span class="stat-desc" id="max-speedup-method">vs Serial Baseline</span>
+                    </div>
+                </div>
+
+                <!-- Custom SVG Performance Chart -->
+                <div class="chart-container">
+                    <h3>Execution Time (ms) — Lower is Better</h3>
+                    <div class="bar-chart-wrapper" id="bar-chart-wrapper">
+                        <div class="placeholder-chart" id="placeholder-chart">Upload an image to generate benchmarks</div>
+                    </div>
+                </div>
+
+                <!-- Detailed Metrics Table -->
+                <div class="table-container">
+                    <table class="metrics-table" id="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Implementation</th>
+                                <th>Execution Time</th>
+                                <th>Speedup</th>
+                                <th>Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-tbody">
+                            <!-- Populated dynamically -->
+                            <tr>
+                                <td colspan="4" class="empty-table">No data available. Please upload an image.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Hardware/CUDA notice -->
+                <div class="cuda-status-card" id="cuda-status-card">
+                    <div class="cuda-header">
+                        <span class="cuda-icon">💡</span>
+                        <h4 id="cuda-card-title">CUDA Hardware Acceleration</h4>
+                    </div>
+                    <div class="cuda-body" id="cuda-status-body">
+                        CUDA runs natively on NVIDIA GPU architectures. When run on local non-NVIDIA systems (e.g. macOS host), the container will report driver/hardware error codes. The UI gracefully displays execution reports and fallbacks.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
