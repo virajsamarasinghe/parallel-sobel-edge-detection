@@ -1,28 +1,3 @@
-// ============================================================================
-//  Hybrid MPI + OpenMP Sobel Edge Detection
-// ----------------------------------------------------------------------------
-//  Two-level parallelism:
-//
-//    * MPI    -> distributed-memory parallelism ACROSS processes (ranks).
-//                The image is split into horizontal row-blocks (domain
-//                decomposition) and each rank owns one block. Ghost rows are
-//                exchanged with neighbours so boundary pixels can be computed.
-//
-//    * OpenMP -> shared-memory parallelism WITHIN each process.
-//                Every rank uses a team of OpenMP threads to apply the Sobel
-//                convolution to its own block of rows in parallel.
-//
-//  MPI is initialised with MPI_Init_thread(MPI_THREAD_FUNNELED): all MPI calls
-//  are made only by the main thread, and the OpenMP threads do pure (MPI-free)
-//  computation inside sobel_local(). FUNNELED is therefore the correct and
-//  minimal threading level for this design.
-//
-//  Build : make hybrid
-//          (mpicxx -O3 -fopenmp -Iinclude -o build/sobel_hybrid
-//           src/sobel_hybrid.cpp src/utils.cpp)
-//  Run   : OMP_NUM_THREADS=4 mpirun -np 4 build/sobel_hybrid
-//          data/lenna.png data/output_hybrid.png [reference.png]
-// ============================================================================
 
 #include <mpi.h>
 #include <omp.h>
