@@ -27,7 +27,7 @@
 
 #include "../include/utils.h"
 
-// ----------------------------------------------------------------------------
+
 //  Applies the Sobel filter to a local chunk of rows using OpenMP threads.
 //
 //  The input buffer includes ghost rows above/below so the 3x3 kernel can be
@@ -35,7 +35,7 @@
 //
 //  This function performs NO MPI calls, so it is safe to run multithreaded
 //  under the MPI_THREAD_FUNNELED model.
-// ----------------------------------------------------------------------------
+
 static void sobel_local(const uint8_t* input, uint8_t* output,
                         int width, int total_rows,
                         int y_start, int y_end)
