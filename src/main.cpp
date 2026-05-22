@@ -44,6 +44,9 @@ int main(int argc, char **argv) {
 #ifdef HAS_PTHREADS
         std::cerr << ", pthreads";
 #endif
+#ifdef HAS_CUDA
+        std::cerr << ", cuda";
+#endif
         std::cerr << std::endl;
         return 1;
     }
@@ -56,6 +59,7 @@ int main(int argc, char **argv) {
     if (argc >= 5) {
         num_threads = std::stoi(argv[4]);
     }
+    (void)num_threads; // Suppress unused warning when Pthreads is disabled
 
     // Load image
     int width, height, channels;
@@ -84,6 +88,11 @@ int main(int argc, char **argv) {
 #ifdef HAS_PTHREADS
     else if (mode == "pthreads") {
         sobel_pthreads(input_img, output_img, width, height, num_threads);
+    }
+#endif
+#ifdef HAS_CUDA
+    else if (mode == "cuda") {
+        sobel_cuda(input_img, output_img, width, height);
     }
 #endif
     else {

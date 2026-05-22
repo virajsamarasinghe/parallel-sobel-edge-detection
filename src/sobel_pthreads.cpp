@@ -20,7 +20,12 @@ void* sobel_thread(void* arg)
     const int Gx[3][3]={{-1,0,1},{-2,0,2},{-1,0,1}};
     const int Gy[3][3]={{1,2,1},{0,0,0},{-1,-2,-1}};
 
-    for(int y=data->start_row;y<data->end_row;y++)
+    int start_y = data->start_row;
+    int end_y = data->end_row;
+    if (start_y < 1) start_y = 1;
+    if (end_y > data->height - 1) end_y = data->height - 1;
+
+    for(int y=start_y;y<end_y;y++)
     {
         for(int x=1;x<data->width-1;x++)
         {
@@ -49,8 +54,8 @@ void sobel_pthreads(const std::vector<uint8_t>& input,
                     int width,int height,
                     int num_threads)
 {
-    pthread_t threads[num_threads];
-    ThreadData thread_data[num_threads];
+    std::vector<pthread_t> threads(num_threads);
+    std::vector<ThreadData> thread_data(num_threads);
 
     int rows_per_thread=height/num_threads;
 
