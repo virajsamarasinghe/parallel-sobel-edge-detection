@@ -185,6 +185,7 @@ int main(int argc, char** argv)
     //
     //  In extended coordinates, computable rows are [1, ext_rows − 1)
     //  because the kernel needs access to y−1 and y+1.
+    //  Row 0 and row ext_rows-1 are ghost/boundary rows — never written to output.
     //
     sobel_local(ext_input.data(), ext_output.data(),
                 width, ext_rows, 1, ext_rows - 1);
