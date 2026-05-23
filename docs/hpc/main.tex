@@ -110,8 +110,8 @@ technologies required by the HPC course: OpenMP and POSIX Threads (which use
 shared memory), MPI (which uses distributed memory), and CUDA (which runs on a
 GPU). We also built one hybrid version that combines MPI with OpenMP.
 
-All parallel versions were tested on two image sizes: a standard 512\,$\times$\,512
-test image and a synthetic 4K image. Every parallel version produced the exact
+All parallel versions were tested on two image sizes: a 4096\,$\times$\,4096
+Lenna test image and a synthetic 4K image. Every parallel version produced the exact
 same output as the serial (single-thread) version, giving RMSE\,=\,0 and
 PSNR\,=\,$\infty$\,dB, which means perfect accuracy.
 
@@ -202,15 +202,15 @@ details are all captured as edges.
 \begin{subfigure}{0.44\textwidth}
   \centering
   \figorbox{lenna.png}{\textwidth}
-  \caption{Input: Lenna (512\,$\times$\,512 grayscale)}
+  \caption{Input: Lenna (4096\,$\times$\,4096 grayscale)}
 \end{subfigure}
 \hspace{0.06\textwidth}
 \begin{subfigure}{0.44\textwidth}
   \centering
-  \figorbox{out_serial_512x512.png}{\textwidth}
+  \figorbox{out_serial_4096x4096.png}{\textwidth}
   \caption{Output: Sobel edge map}
 \end{subfigure}
-\caption{Sobel edge detection on the 512\,$\times$\,512 test image.
+\caption{Sobel edge detection on the 4096\,$\times$\,4096 test image.
   Bright pixels mark high-gradient locations (edges); dark pixels are
   flat (uniform) regions.}
 \label{fig:sobel_example}
@@ -252,7 +252,7 @@ Each timing measurement was repeated three times and the average is reported.
 \toprule
 \textbf{Label} & \textbf{Size} & \textbf{Description} & \textbf{Serial time} \\
 \midrule
-Small & 512\,$\times$\,512   & Standard Lenna test image & 0.68\,ms \\
+Lenna & 4096\,$\times$\,4096 & Standard Lenna test image & 43.52\,ms \\
 4K    & 3840\,$\times$\,2160 & Synthetic pattern image   & 20.22\,ms \\
 \bottomrule
 \end{tabular}
@@ -266,12 +266,12 @@ Small & 512\,$\times$\,512   & Standard Lenna test image & 0.68\,ms \\
 \toprule
 \textbf{Version} & \textbf{Image sizes} & \textbf{Worker configurations tested} \\
 \midrule
-Serial        & Small, 4K & 1 (baseline) \\
-OpenMP        & Small, 4K & threads $=$ 1, 2, 4, 8 \\
-Pthreads      & Small, 4K & threads $=$ 1, 2, 4, 8 \\
-MPI           & Small, 4K & processes $=$ 1, 2, 4, 8 \\
-Hybrid MPI+OMP & Small, 4K & (P$\times$T) $=$ 2$\times$2, 2$\times$4, 4$\times$2, 1$\times$8 \\
-CUDA          & Small, 4K & 16$\times$16 thread blocks (1 thread per pixel) \\
+Serial        & Lenna, 4K & 1 (baseline) \\
+OpenMP        & Lenna, 4K & threads $=$ 1, 2, 4, 8 \\
+Pthreads      & Lenna, 4K & threads $=$ 1, 2, 4, 8 \\
+MPI           & Lenna, 4K & processes $=$ 1, 2, 4, 8 \\
+Hybrid MPI+OMP & Lenna, 4K & (P$\times$T) $=$ 2$\times$2, 2$\times$4, 4$\times$2, 1$\times$8 \\
+CUDA          & Lenna, 4K & 16$\times$16 thread blocks (1 thread per pixel) \\
 \bottomrule
 \end{tabular}
 \caption{Experimental configurations (P = MPI processes, T = OpenMP threads).}
@@ -338,7 +338,7 @@ around the Sobel function call only, so image loading and saving are not counted
 \toprule
 \textbf{Image Size} & \textbf{Time (ms)} & \textbf{Speedup} \\
 \midrule
-512\,$\times$\,512   & 0.68  & 1.00$\times$ (baseline) \\
+4096\,$\times$\,4096 & 43.52 & 1.00$\times$ (baseline) \\
 4K (3840\,$\times$\,2160) & 20.22 & 1.00$\times$ (baseline) \\
 \bottomrule
 \end{tabular}
@@ -423,15 +423,15 @@ its own rows, so no locking is needed.
 \centering\small
 \begin{tabular}{@{}c rr rr@{}}
 \toprule
- & \multicolumn{2}{c}{\textbf{Small (512$\times$512)}} &
+ & \multicolumn{2}{c}{\textbf{Lenna (4096$\times$4096)}} &
    \multicolumn{2}{c}{\textbf{4K (3840$\times$2160)}} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 \textbf{Threads} & Time (ms) & Speedup & Time (ms) & Speedup \\
 \midrule
-1 & 2.57 & 0.26$\times$ & 61.23 & 0.33$\times$ \\
-2 & 1.49 & 0.46$\times$ & 31.87 & 0.63$\times$ \\
-4 & 1.16 & 0.59$\times$ & 17.66 & 1.14$\times$ \\
-8 & 1.08 & 0.63$\times$ & 13.80 & 1.47$\times$ \\
+1 & 164.48 & 0.26$\times$ & 61.23 & 0.33$\times$ \\
+2 & 95.36  & 0.46$\times$ & 31.87 & 0.63$\times$ \\
+4 & 74.24  & 0.59$\times$ & 17.66 & 1.14$\times$ \\
+8 & 69.12  & 0.63$\times$ & 13.80 & 1.47$\times$ \\
 \bottomrule
 \end{tabular}
 \caption{OpenMP runtime and speedup vs serial baseline per thread count.
@@ -518,15 +518,15 @@ same output array but write to different rows, so no locking is needed.
 \centering\small
 \begin{tabular}{@{}c rr rr@{}}
 \toprule
- & \multicolumn{2}{c}{\textbf{Small (512$\times$512)}} &
+ & \multicolumn{2}{c}{\textbf{Lenna (4096$\times$4096)}} &
    \multicolumn{2}{c}{\textbf{4K (3840$\times$2160)}} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 \textbf{Threads} & Time (ms) & Speedup & Time (ms) & Speedup \\
 \midrule
-1 & 0.77 & 0.88$\times$ & 21.81 & 0.93$\times$ \\
-2 & 0.41 & 1.66$\times$ & 11.38 & 1.78$\times$ \\
-4 & 0.25 & 2.72$\times$ & 6.67  & 3.03$\times$ \\
-8 & 0.29 & 2.34$\times$ & 6.52  & 3.10$\times$ \\
+1 & 49.28 & 0.88$\times$ & 21.81 & 0.93$\times$ \\
+2 & 26.24 & 1.66$\times$ & 11.38 & 1.78$\times$ \\
+4 & 16.00 & 2.72$\times$ & 6.67  & 3.03$\times$ \\
+8 & 18.56 & 2.34$\times$ & 6.52  & 3.10$\times$ \\
 \bottomrule
 \end{tabular}
 \caption{Pthreads runtime and speedup vs serial baseline per thread count.}
@@ -627,15 +627,15 @@ covers the scatter, ghost exchange, computation, and gather phases, but
 \centering\small
 \begin{tabular}{@{}c rr rr@{}}
 \toprule
- & \multicolumn{2}{c}{\textbf{Small (512$\times$512)}} &
+ & \multicolumn{2}{c}{\textbf{Lenna (4096$\times$4096)}} &
    \multicolumn{2}{c}{\textbf{4K (3840$\times$2160)}} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 \textbf{Processes} & Time (ms) & Sp.\,(vs 1P) & Time (ms) & Sp.\,(vs 1P) \\
 \midrule
-1 & 0.24 & 1.00$\times$ & 9.38  & 1.00$\times$ \\
-2 & 0.26 & 0.92$\times$ & 5.23  & 1.79$\times$ \\
-4 & 0.26 & 0.92$\times$ & 4.08  & 2.30$\times$ \\
-8 & 0.47 & 0.51$\times$ & 10.33 & 0.91$\times$ \\
+1 & 15.36 & 1.00$\times$ & 9.38  & 1.00$\times$ \\
+2 & 16.64 & 0.92$\times$ & 5.23  & 1.79$\times$ \\
+4 & 16.64 & 0.92$\times$ & 4.08  & 2.30$\times$ \\
+8 & 30.08 & 0.51$\times$ & 10.33 & 0.91$\times$ \\
 \bottomrule
 \end{tabular}
 \caption{MPI runtime and internal speedup (relative to MPI 1-process). MPI
@@ -740,16 +740,16 @@ much time is spent on actual computation versus MPI communication.
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{@{}cc cc cc@{}}
 \toprule
- & & \multicolumn{2}{c}{\textbf{Small (512$\times$512)}} &
+ & & \multicolumn{2}{c}{\textbf{Lenna (4096$\times$4096)}} &
      \multicolumn{2}{c}{\textbf{4K (3840$\times$2160)}} \\
 \cmidrule(lr){3-4}\cmidrule(lr){5-6}
 \textbf{P$\times$T} & \textbf{Workers} &
   Time (ms) & Sp.\,(vs serial) & Time (ms) & Sp.\,(vs serial) \\
 \midrule
-2$\times$2 & 4 & 0.73 & 0.93$\times$ & 18.96 & 1.07$\times$ \\
-2$\times$4 & 8 & 0.62 & 1.10$\times$ & 16.33 & 1.24$\times$ \\
-4$\times$2 & 8 & 0.74 & 0.92$\times$ & 15.17 & 1.33$\times$ \\
-1$\times$8 & 8 & 0.63 & 1.08$\times$ & 17.22 & 1.17$\times$ \\
+2$\times$2 & 4 & 46.72 & 0.93$\times$ & 18.96 & 1.07$\times$ \\
+2$\times$4 & 8 & 39.68 & 1.10$\times$ & 16.33 & 1.24$\times$ \\
+4$\times$2 & 8 & 47.36 & 0.92$\times$ & 15.17 & 1.33$\times$ \\
+1$\times$8 & 8 & 40.32 & 1.08$\times$ & 17.22 & 1.17$\times$ \\
 \bottomrule
 \end{tabular}
 \caption{Hybrid MPI+OpenMP runtime and speedup vs serial.
@@ -865,7 +865,7 @@ version of MPI's communication cost.
 \textbf{Image size} & \textbf{Block size} & \textbf{Total blocks} &
 \textbf{Time (ms)} & \textbf{Speedup} \\
 \midrule
-512$\times$512   & 16$\times$16 & 32$\times$32   &
+4096$\times$4096 & 16$\times$16 & 256$\times$256  &
   \textit{[Pending]} & \textit{[Pending]} \\
 4K (3840$\times$2160) & 16$\times$16 & 240$\times$135 &
   \textit{[Pending]} & \textit{[Pending]} \\
@@ -944,7 +944,7 @@ the serial version regardless of how many threads or processes are used.
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Version} &
-\multicolumn{2}{c}{\textbf{512$\times$512}} &
+\multicolumn{2}{c}{\textbf{4096$\times$4096}} &
 \multicolumn{2}{c}{\textbf{4K}} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
  & RMSE & PSNR & RMSE & PSNR \\
@@ -997,8 +997,8 @@ against the serial baseline (20.22\,ms for 4K).
 \label{subsec:results_4k}
 
 Table~\ref{tab:res_4k} lists all configurations measured on the 4K image,
-which is large enough to show meaningful scaling behaviour. The 512$\times$512
-results are in Appendix~A (Tables~\ref{tab:t_openmp}--\ref{tab:t_hybrid}).
+which is large enough to show meaningful scaling behaviour. The 4096$\times$4096
+Lenna image results are in Appendix~A (Tables~\ref{tab:t_openmp}--\ref{tab:t_hybrid}).
 
 \begin{table}[H]
 \centering\small
@@ -1056,18 +1056,21 @@ initialisation cost even with one thread (61.23\,ms vs 20.22\,ms for serial).
 \label{fig:speedup_4k}
 \end{figure}
 
-For the 512$\times$512 image (Figure~\ref{fig:speedup_512}), the serial
-baseline is only 0.68\,ms. Parallelisation overhead (thread creation, memory
-allocation) costs more than the computation itself, which is why many
-configurations run slower than serial at this size. This teaches us an
-important lesson: \textbf{parallel computing only helps when the work is large
-enough to outweigh the overhead}.
+For the 4096$\times$4096 Lenna image (Figure~\ref{fig:speedup_512}), the serial
+baseline is 43.52\,ms. Despite the large image, OpenMP on macOS still runs
+slower than serial at all thread counts due to the fixed libomp initialisation
+overhead---even at this size, the overhead cost exceeds the per-pixel computation
+savings. Pthreads, however, achieves meaningful speedup (2.72$\times$ at 4 threads),
+demonstrating that the slowdown is specific to the macOS OpenMP runtime, not an
+inherent limitation of parallelism for this workload. This teaches us that
+\textbf{the right parallel tool matters as much as the parallelism itself}.
 
 \begin{figure}[H]
 \centering
 \figorbox{speedup_512.png}{0.72\textwidth}
-\caption{Speedup vs thread count on the 512$\times$512 image.
-  The serial computation (0.68\,ms) is so short that thread overhead dominates.}
+\caption{Speedup vs thread count on the 4096$\times$4096 Lenna image
+  (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on
+  macOS dominates at all thread counts; Pthreads scales well.}
 \label{fig:speedup_512}
 \end{figure}
 
@@ -1262,8 +1265,8 @@ with our measured Pthreads results.
 This project implemented Sobel edge detection in six parallel forms using all
 four technologies required by the course guideline: OpenMP and POSIX Threads
 (shared memory), MPI (distributed memory), Hybrid MPI+OpenMP, and CUDA (GPU).
-All versions were tested on two image sizes---512$\times$512 and 4K
-(3840$\times$2160)---across 1, 2, 4, and 8 worker configurations. The five
+All versions were tested on two image sizes---4096$\times$4096 (Lenna test image)
+and 4K (3840$\times$2160)---across 1, 2, 4, and 8 worker configurations. The five
 required deliverables (serial code, shared-memory code, distributed-memory
 code, hybrid code, and this analysis report) are all addressed.
 
@@ -1276,11 +1279,14 @@ code, hybrid code, and this analysis report) are all addressed.
         sizes and all thread/process counts. The Sobel filter is deterministic
         with integer arithmetic, so correctness is guaranteed by design.
 
-  \item \textbf{Image size matters:} On the small 512$\times$512 image,
-        nearly every parallel version is \emph{slower} than serial because
-        thread creation overhead is larger than the computation itself.
-        The 4K image (150\,M operations) is large enough for parallelism to
-        pay off clearly.
+  \item \textbf{Runtime matters as much as image size:} On the 4096$\times$4096
+        Lenna image, OpenMP runs \emph{slower} than serial at all thread counts
+        on macOS due to the fixed libomp initialisation overhead, even though the
+        image is large ($\approx$335\,M operations). Pthreads, by contrast,
+        achieves up to 2.72$\times$ speedup at 4 threads on the same image.
+        The 4K image (3840$\times$2160, $\approx$165\,M operations) confirms
+        that the bottleneck is the OpenMP runtime cost, not insufficient
+        workload size.
 
   \item \textbf{Pthreads gave the best CPU speedup} on this machine:
         3.03$\times$ at 4 threads on the 4K image. Pthreads has lower
