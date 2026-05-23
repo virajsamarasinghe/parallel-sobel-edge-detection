@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.4)  23 MAY 2026 01:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.4)  23 MAY 2026 21:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -814,7 +814,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.130 \clearpage
+l.131 \clearpage
                  [1
 
 ] (./main.toc)
@@ -824,33 +824,38 @@ l.130 \clearpage
  [2
 
 ]
-<diagram/lenna.png, id=185, 513.92pt x 513.92pt>
-File: diagram/lenna.png Graphic file (type png)
-<use diagram/lenna.png>
-Package pdftex.def Info: diagram/lenna.png  used on input line 204.
-(pdftex.def)             Requested size: 199.30698pt x 199.30661pt.
-<diagram/out_serial_512x512.png, id=186, 513.92pt x 513.92pt>
-File: diagram/out_serial_512x512.png Graphic file (type png)
-<use diagram/out_serial_512x512.png>
-Package pdftex.def Info: diagram/out_serial_512x512.png  used on input line 210
-.
-(pdftex.def)             Requested size: 199.30698pt x 199.30661pt.
+<diagram/lenna_4096.png, id=185, 4111.36pt x 4111.36pt>
+File: diagram/lenna_4096.png Graphic file (type png)
+<use diagram/lenna_4096.png>
+Package pdftex.def Info: diagram/lenna_4096.png  used on input line 205.
+(pdftex.def)             Requested size: 199.30698pt x 199.30663pt.
+<diagram/out_serial_4096x4096.png, id=186, 4111.36pt x 4111.36pt>
+File: diagram/out_serial_4096x4096.png Graphic file (type png)
+<use diagram/out_serial_4096x4096.png>
+Package pdftex.def Info: diagram/out_serial_4096x4096.png  used on input line 2
+11.
+(pdftex.def)             Requested size: 199.30698pt x 199.30663pt.
  [3
 
 ]
-Underfull \hbox (badness 1442) in paragraph at lines 233--235
+Underfull \hbox (badness 1442) in paragraph at lines 234--236
 []\OT1/cmr/m/n/12 Implement par-al-lel ver-sions us-ing OpenMP, POSIX Threads, 
 MPI, Hy-brid
  []
 
-[4 <./diagram/lenna.png> <./diagram/out_serial_512x512.png (PNG copy)>]
-[5] [6
+[4 <./diagram/lenna_4096.png (PNG copy)> <./diagram/out_serial_4096x4096.png (P
+NG copy)>] [5] [6
 
-] [7] [8] [9] [10] [11] [12]
+] [7] [8] [9] [10]
+Overfull \hbox (5.48698pt too wide) in paragraph at lines 869--878
+ [][] 
+ []
+
+[11] [12]
 <diagram/rmse_bar.png, id=277, 469.755pt x 289.08pt>
 File: diagram/rmse_bar.png Graphic file (type png)
 <use diagram/rmse_bar.png>
-Package pdftex.def Info: diagram/rmse_bar.png  used on input line 967.
+Package pdftex.def Info: diagram/rmse_bar.png  used on input line 969.
 (pdftex.def)             Requested size: 317.07614pt x 195.12498pt.
  [13
 
@@ -860,50 +865,50 @@ Package pdftex.def Info: diagram/rmse_bar.png  used on input line 967.
 <diagram/speedup_shared_4k.png, id=304, 433.62pt x 289.08pt>
 File: diagram/speedup_shared_4k.png Graphic file (type png)
 <use diagram/speedup_shared_4k.png>
-Package pdftex.def Info: diagram/speedup_shared_4k.png  used on input line 1053
+Package pdftex.def Info: diagram/speedup_shared_4k.png  used on input line 1057
 .
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
-
-[16]
+ [16]
 <diagram/speedup_512.png, id=312, 433.62pt x 289.08pt>
 File: diagram/speedup_512.png Graphic file (type png)
 <use diagram/speedup_512.png>
-Package pdftex.def Info: diagram/speedup_512.png  used on input line 1068.
+Package pdftex.def Info: diagram/speedup_512.png  used on input line 1074.
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
  [17 <./diagram/speedup_shared_4k.png> <./diagram/speedup_512.png>]
 <diagram/efficiency_4k.png, id=321, 433.62pt x 289.08pt>
 File: diagram/efficiency_4k.png Graphic file (type png)
 <use diagram/efficiency_4k.png>
-Package pdftex.def Info: diagram/efficiency_4k.png  used on input line 1087.
+Package pdftex.def Info: diagram/efficiency_4k.png  used on input line 1094.
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
-
-[18 <./diagram/efficiency_4k.png>]
+ [18 <./diagram/efficiency_4k.png>]
 <diagram/mpi_time_4k.png, id=332, 397.485pt x 289.08pt>
 File: diagram/mpi_time_4k.png Graphic file (type png)
 <use diagram/mpi_time_4k.png>
-Package pdftex.def Info: diagram/mpi_time_4k.png  used on input line 1140.
+Package pdftex.def Info: diagram/mpi_time_4k.png  used on input line 1147.
 (pdftex.def)             Requested size: 217.42265pt x 158.12993pt.
 <diagram/mpi_speedup_4k.png, id=333, 397.485pt x 289.08pt>
 File: diagram/mpi_speedup_4k.png Graphic file (type png)
 <use diagram/mpi_speedup_4k.png>
-Package pdftex.def Info: diagram/mpi_speedup_4k.png  used on input line 1145.
+Package pdftex.def Info: diagram/mpi_speedup_4k.png  used on input line 1152.
 (pdftex.def)             Requested size: 217.42265pt x 158.12993pt.
 <diagram/hybrid_time_4k.png, id=335, 433.62pt x 289.08pt>
 File: diagram/hybrid_time_4k.png Graphic file (type png)
 <use diagram/hybrid_time_4k.png>
-Package pdftex.def Info: diagram/hybrid_time_4k.png  used on input line 1167.
+Package pdftex.def Info: diagram/hybrid_time_4k.png  used on input line 1174.
 (pdftex.def)             Requested size: 317.07614pt x 211.39275pt.
- [19 <./diagram/mpi_time_4k.png> <./diagram/mpi_speedup_4k.png>]
-<diagram/exec_time_comparison_4k.png, id=346, 505.89pt x 325.215pt>
+
+[19 <./diagram/mpi_time_4k.png> <./diagram/mpi_speedup_4k.png>]
+<diagram/exec_time_comparison_4k.png, id=345, 505.89pt x 325.215pt>
 File: diagram/exec_time_comparison_4k.png Graphic file (type png)
 <use diagram/exec_time_comparison_4k.png>
 Package pdftex.def Info: diagram/exec_time_comparison_4k.png  used on input lin
-e 1203.
+e 1218.
 (pdftex.def)             Requested size: 371.43698pt x 238.78452pt.
  [20 <./diagram/hybrid_time_4k.png>] [21 <./diagram/exec_time_comparison_4k.png
 >] [22] [23
 
-] [24] (./main.bbl) [25] (./main.aux)
+]
+[24] [25] (./main.bbl) [26] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -912,10 +917,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 56286A652117C20AEEAEEC3EAF69D7C6;5189.
  ) 
 Here is how much of TeX's memory you used:
- 24051 strings out of 474116
- 462115 string characters out of 5743683
+ 24050 strings out of 474116
+ 462132 string characters out of 5743683
  1954187 words of memory out of 5000000
- 45932 multiletter control sequences out of 15000+600000
+ 45931 multiletter control sequences out of 15000+600000
  567290 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,11n,87p,489b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -940,10 +945,10 @@ exmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2024/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2024/texmf
 -dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (26 pages, 1672138 bytes).
+Output written on main.pdf (27 pages, 21981745 bytes).
 PDF statistics:
- 493 PDF objects out of 1000 (max. 8388607)
- 400 compressed objects within 4 object streams
+ 496 PDF objects out of 1000 (max. 8388607)
+ 401 compressed objects within 5 object streams
  96 named destinations out of 1000 (max. 500000)
  324 words of extra memory for PDF output out of 10000 (max. 10000000)
 

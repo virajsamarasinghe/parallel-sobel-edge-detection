@@ -11,9 +11,9 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2}The Sobel Operator}{3}{subsection.1.2}\protected@file@percent }
 \newlabel{eq:sobel_kernels}{{1}{3}{The Sobel Operator}{equation.1.1}{}}
 \newlabel{eq:magnitude}{{2}{3}{The Sobel Operator}{equation.1.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Sobel edge detection on the 512\,$\times $\,512 test image. Bright pixels mark high-gradient locations (edges); dark pixels are flat (uniform) regions.}}{4}{figure.caption.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Sobel edge detection on the 4096\,$\times $\,4096 test image. Bright pixels mark high-gradient locations (edges); dark pixels are flat (uniform) regions.}}{4}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:sobel_example}{{1}{4}{Sobel edge detection on the 512\,$\times $\,512 test image. Bright pixels mark high-gradient locations (edges); dark pixels are flat (uniform) regions}{figure.caption.2}{}}
+\newlabel{fig:sobel_example}{{1}{4}{Sobel edge detection on the 4096\,$\times $\,4096 test image. Bright pixels mark high-gradient locations (edges); dark pixels are flat (uniform) regions}{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Why Parallelism?}{4}{subsection.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Objectives}{4}{subsection.1.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Experimental Setup}{4}{subsection.1.5}\protected@file@percent }
@@ -57,8 +57,8 @@
 \newlabel{subsec:cuda}{{2.6}{10}{CUDA (GPU Acceleration)}{subsection.2.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces CUDA: input data is copied to the GPU, processed by thousands of threads in parallel (one thread per pixel), and the result is copied back to CPU memory.}}{11}{figure.caption.15}\protected@file@percent }
 \newlabel{fig:diag_cuda}{{7}{11}{CUDA: input data is copied to the GPU, processed by thousands of threads in parallel (one thread per pixel), and the result is copied back to CPU memory}{figure.caption.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces CUDA runtime results (pending GPU cluster run). Expected speedup based on GPU-parallel pixel processing: 10--40$\times $ over serial for 4K.}}{11}{table.caption.16}\protected@file@percent }
-\newlabel{tab:t_cuda}{{8}{11}{CUDA runtime results (pending GPU cluster run). Expected speedup based on GPU-parallel pixel processing: 10--40$\times $ over serial for 4K}{table.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces CUDA runtime results (NVIDIA GeForce GTX\,960M). Speedup is relative to the CPU serial baseline measured on the same machine (145.23\,ms for 4096$\times $4096; 71.53\,ms for 4K). Time shown is end-to-end (H$\to $D copy + kernel + D$\to $H copy).}}{11}{table.caption.16}\protected@file@percent }
+\newlabel{tab:t_cuda}{{8}{11}{CUDA runtime results (NVIDIA GeForce GTX\,960M). Speedup is relative to the CPU serial baseline measured on the same machine (145.23\,ms for 4096$\times $4096; 71.53\,ms for 4K). Time shown is end-to-end (H$\to $D copy + kernel + D$\to $H copy)}{table.caption.16}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Summary of Parallelisation Strategies}{11}{subsection.2.7}\protected@file@percent }
 \newlabel{subsec:summary_strategies}{{2.7}{11}{Summary of Parallelisation Strategies}{subsection.2.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Summary of how each parallel version divides and combines the work.}}{12}{table.caption.17}\protected@file@percent }
@@ -67,22 +67,22 @@
 \newlabel{sec:rmse}{{3}{13}{Accuracy Compared to Serial (RMSE)}{section.3}{}}
 \newlabel{eq:rmse}{{3}{13}{Accuracy Compared to Serial (RMSE)}{equation.3.3}{}}
 \newlabel{eq:psnr}{{4}{13}{Accuracy Compared to Serial (RMSE)}{equation.3.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces RMSE and PSNR of each parallel version vs the serial reference. Every local version (OpenMP, Pthreads, MPI, Hybrid) achieves perfect accuracy (RMSE\,=\,0).}}{13}{table.caption.18}\protected@file@percent }
-\newlabel{tab:rmse}{{10}{13}{RMSE and PSNR of each parallel version vs the serial reference. Every local version (OpenMP, Pthreads, MPI, Hybrid) achieves perfect accuracy (RMSE\,=\,0)}{table.caption.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces RMSE and PSNR of each parallel version vs the serial reference. All versions (including CUDA) achieve perfect accuracy (RMSE\,=\,0, PSNR\,=\,$\infty $\,dB).}}{13}{table.caption.18}\protected@file@percent }
+\newlabel{tab:rmse}{{10}{13}{RMSE and PSNR of each parallel version vs the serial reference. All versions (including CUDA) achieve perfect accuracy (RMSE\,=\,0, PSNR\,=\,$\infty $\,dB)}{table.caption.18}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces RMSE bar chart -- every bar is at zero, confirming bit-perfect accuracy for all tested implementations.}}{14}{figure.caption.19}\protected@file@percent }
 \newlabel{fig:rmse}{{8}{14}{RMSE bar chart -- every bar is at zero, confirming bit-perfect accuracy for all tested implementations}{figure.caption.19}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Results and Performance Analysis}{15}{section.4}\protected@file@percent }
 \newlabel{sec:perf}{{4}{15}{Results and Performance Analysis}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Complete Results --- 4K Image}{15}{subsection.4.1}\protected@file@percent }
 \newlabel{subsec:results_4k}{{4.1}{15}{Complete Results --- 4K Image}{subsection.4.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces All configurations on the 4K image. Bold = best result per version. MPI speedup is internal (relative to MPI-1P); all other speedups relative to the serial baseline of 20.22\,ms.}}{16}{table.caption.20}\protected@file@percent }
-\newlabel{tab:res_4k}{{11}{16}{All configurations on the 4K image. Bold = best result per version. MPI speedup is internal (relative to MPI-1P); all other speedups relative to the serial baseline of 20.22\,ms}{table.caption.20}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces All configurations on the 4K image. Bold = best result per version. MPI speedup is internal (relative to MPI-1P); all other CPU speedups are relative to the serial baseline of 20.22\,ms (Apple Silicon). $^{*}$CUDA speedup is relative to the CPU serial baseline (71.53\,ms) measured on the same NVIDIA GTX\,960M machine.}}{16}{table.caption.20}\protected@file@percent }
+\newlabel{tab:res_4k}{{11}{16}{All configurations on the 4K image. Bold = best result per version. MPI speedup is internal (relative to MPI-1P); all other CPU speedups are relative to the serial baseline of 20.22\,ms (Apple Silicon). $^{*}$CUDA speedup is relative to the CPU serial baseline (71.53\,ms) measured on the same NVIDIA GTX\,960M machine}{table.caption.20}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Speedup Analysis}{16}{subsection.4.2}\protected@file@percent }
 \newlabel{subsec:speedup}{{4.2}{16}{Speedup Analysis}{subsection.4.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Speedup vs thread count for OpenMP and Pthreads on the 4K image. The dashed line is ideal (linear) scaling.}}{17}{figure.caption.21}\protected@file@percent }
 \newlabel{fig:speedup_4k}{{9}{17}{Speedup vs thread count for OpenMP and Pthreads on the 4K image. The dashed line is ideal (linear) scaling}{figure.caption.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Speedup vs thread count on the 512$\times $512 image. The serial computation (0.68\,ms) is so short that thread overhead dominates.}}{17}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:speedup_512}{{10}{17}{Speedup vs thread count on the 512$\times $512 image. The serial computation (0.68\,ms) is so short that thread overhead dominates}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well.}}{17}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:speedup_512}{{10}{17}{Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well}{figure.caption.22}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Parallel Efficiency}{18}{subsection.4.3}\protected@file@percent }
 \newlabel{subsec:efficiency}{{4.3}{18}{Parallel Efficiency}{subsection.4.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Parallel efficiency (speedup\,/\,threads) for OpenMP and Pthreads on the 4K image. Pthreads stays more efficient due to lower runtime overhead.}}{18}{figure.caption.23}\protected@file@percent }
@@ -97,7 +97,6 @@
 \newlabel{fig:mpi}{{12}{19}{MPI performance on the 4K image: time peaks at 4 processes; communication overhead dominates beyond that}{figure.caption.25}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Hybrid Process / Thread Split}{19}{subsection.4.6}\protected@file@percent }
 \newlabel{subsec:hybrid_perf}{{4.6}{19}{Hybrid Process / Thread Split}{subsection.4.6}{}}
-\citation{kaur2018parallel}
 \@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Hybrid MPI+OpenMP execution time on 4K image. The dashed lines show the serial baseline and the best MPI result for comparison.}}{20}{figure.caption.26}\protected@file@percent }
 \newlabel{fig:hybrid}{{13}{20}{Hybrid MPI+OpenMP execution time on 4K image. The dashed lines show the serial baseline and the best MPI result for comparison}{figure.caption.26}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.7}CUDA GPU Performance}{20}{subsection.4.7}\protected@file@percent }
@@ -116,11 +115,10 @@
 \newlabel{sec:conclusion}{{5}{23}{Conclusion}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Summary of Work}{23}{subsection.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Key Findings}{23}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}What We Learned}{24}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Limitations and Future Work}{24}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}What We Learned}{25}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Limitations and Future Work}{25}{subsection.5.4}\protected@file@percent }
 \bibstyle{ieeetr}
 \bibdata{references1}
 \bibcite{sobel1968}{1}
-\bibcite{kaur2018parallel}{2}
-\bibcite{amdahl1967validity}{3}
-\gdef \@abspage@last{26}
+\bibcite{amdahl1967validity}{2}
+\gdef \@abspage@last{27}

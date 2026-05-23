@@ -66,30 +66,30 @@ plt.savefig(os.path.join(OUT, 'speedup_shared_4k.png'))
 plt.close()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Chart 2 — Speedup vs Threads (512×512), OpenMP + Pthreads
+# Chart 2 — Speedup vs Threads (4096×4096), OpenMP + Pthreads
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(6, 4))
-serial_512 = 0.68
-omp_t_512  = [2.57, 1.49, 1.16, 1.08]
-pth_t_512  = [0.77, 0.41, 0.25, 0.29]
-omp_sp_512 = [serial_512/t for t in omp_t_512]
-pth_sp_512 = [serial_512/t for t in pth_t_512]
+serial_4096 = 43.45
+omp_t_4096  = [164.48, 95.36, 74.24, 69.12]
+pth_t_4096  = [49.28,  26.24, 16.00, 18.56]
+omp_sp_4096 = [serial_4096/t for t in omp_t_4096]
+pth_sp_4096 = [serial_4096/t for t in pth_t_4096]
 
-ax.plot(threads, ideal,      '--', color=C_IDEAL, lw=1.5, label='Ideal linear', zorder=1)
-ax.plot(threads, omp_sp_512, '-o', color=C_OMP,   lw=2, ms=7, label='OpenMP',   zorder=3)
-ax.plot(threads, pth_sp_512, '-s', color=C_PTH,   lw=2, ms=7, label='Pthreads', zorder=3)
+ax.plot(threads, ideal,       '--', color=C_IDEAL, lw=1.5, label='Ideal linear', zorder=1)
+ax.plot(threads, omp_sp_4096, '-o', color=C_OMP,   lw=2, ms=7, label='OpenMP',   zorder=3)
+ax.plot(threads, pth_sp_4096, '-s', color=C_PTH,   lw=2, ms=7, label='Pthreads', zorder=3)
 
-for x, y in zip(threads, omp_sp_512):
+for x, y in zip(threads, omp_sp_4096):
     ax.annotate(f'{y:.2f}×', (x, y), textcoords='offset points',
                 xytext=(0, 8), ha='center', fontsize=8, color=C_OMP)
-for x, y in zip(threads, pth_sp_512):
+for x, y in zip(threads, pth_sp_4096):
     ax.annotate(f'{y:.2f}×', (x, y), textcoords='offset points',
                 xytext=(0, 8), ha='center', fontsize=8, color=C_PTH)
 
 ax.set_xlabel('Number of Threads')
 ax.set_ylabel('Speedup (×)')
-ax.set_title('Speedup vs Threads — 512×512 Image\n'
-             'Serial baseline = 0.68 ms', fontsize=10)
+ax.set_title('Speedup vs Threads — 4096×4096 Lenna Image\n'
+             'Serial baseline = 43.45 ms', fontsize=10)
 ax.set_xticks(threads)
 ax.legend(framealpha=0.8, fontsize=9)
 plt.tight_layout()
@@ -173,22 +173,19 @@ plt.close()
 fig, ax = plt.subplots(figsize=(7, 4.5))
 labels  = ['Serial', 'OpenMP\n(8 threads)', 'Pthreads\n(4 threads)',
            'MPI\n(4 processes)', 'Hybrid\n(4P×2T)', 'CUDA\n(GPU)']
-times   = [20.22, 13.80, 6.67, 4.08, 15.17, None]
+times   = [20.22, 13.80, 6.67, 4.08, 15.17, 6.289]
 colors  = [C_SER, C_OMP, C_PTH, C_MPI, C_HYB, C_CUDA]
 
 y_pos = np.arange(len(labels))
 for i, (label, t, col) in enumerate(zip(labels, times, colors)):
-    if t is not None:
-        ax.barh(i, t, color=col, alpha=0.85, edgecolor='white', height=0.55)
-        ax.text(t + 0.3, i, f'{t:.2f} ms', va='center', fontsize=9)
-    else:
-        ax.text(0.5, i, '[Pending — GPU cluster run]',
-                va='center', fontsize=9, fontstyle='italic', color=C_CUDA)
+    ax.barh(i, t, color=col, alpha=0.85, edgecolor='white', height=0.55)
+    ax.text(t + 0.3, i, f'{t:.3f} ms', va='center', fontsize=9)
 
 ax.set_yticks(y_pos)
 ax.set_yticklabels(labels, fontsize=9)
 ax.set_xlabel('Execution Time (ms)')
-ax.set_title('Best Execution Time by Implementation — 4K Image', fontsize=10)
+ax.set_title('Best Execution Time by Implementation — 4K Image\n'
+             '(CUDA: NVIDIA GTX 960M, end-to-end incl. PCIe transfers)', fontsize=10)
 ax.set_xlim(0, 27)
 plt.tight_layout()
 plt.savefig(os.path.join(OUT, 'exec_time_comparison_4k.png'))
@@ -198,21 +195,18 @@ plt.close()
 # Chart 7 — RMSE bar chart (all zero)
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(6.5, 4))
-impls  = ['OpenMP', 'Pthreads', 'MPI', 'Hybrid\nMPI+OMP', 'CUDA*']
+impls  = ['OpenMP', 'Pthreads', 'MPI', 'Hybrid\nMPI+OMP', 'CUDA']
 rmse   = [0.0, 0.0, 0.0, 0.0, 0.0]
 cols   = [C_OMP, C_PTH, C_MPI, C_HYB, C_CUDA]
 
 bars = ax.bar(impls, rmse, color=cols, alpha=0.85, edgecolor='white', width=0.55)
-for bar, impl in zip(bars, impls):
+for bar in bars:
     ax.text(bar.get_x() + bar.get_width()/2, 0.00008,
             '0.0000', ha='center', va='bottom', fontsize=9, fontweight='bold')
 ax.set_ylim(0, 0.0012)
 ax.set_ylabel('RMSE (vs serial reference)')
 ax.set_title('Accuracy — RMSE vs Serial for All Implementations\n'
-             'Both image sizes: 512×512 and 4K', fontsize=10)
-ax.text(0.98, 0.97, '* CUDA results pending GPU cluster run',
-        transform=ax.transAxes, fontsize=8, ha='right', va='top',
-        fontstyle='italic', color='grey')
+             'Both image sizes: 4096×4096 and 4K', fontsize=10)
 plt.tight_layout()
 plt.savefig(os.path.join(OUT, 'rmse_bar.png'))
 plt.close()

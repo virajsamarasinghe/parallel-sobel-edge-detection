@@ -110,19 +110,20 @@ technologies required by the HPC course: OpenMP and POSIX Threads (which use
 shared memory), MPI (which uses distributed memory), and CUDA (which runs on a
 GPU). We also built one hybrid version that combines MPI with OpenMP.
 
-All parallel versions were tested on two image sizes: a 4096\,$\times$\,4096
-Lenna test image and a synthetic 4K image. Every parallel version produced the exact
+All parallel versions were tested on two image sizes: a $4096\times4096$ test image
+and a synthetic 4K image. Every parallel version produced the exact
 same output as the serial (single-thread) version, giving RMSE\,=\,0 and
 PSNR\,=\,$\infty$\,dB, which means perfect accuracy.
 
-For the 4K image on an 8-core Apple Silicon machine, the best results were:
-POSIX Threads with 4 threads gave a \textbf{3.03$\times$} speedup; MPI with
-4 processes gave the best raw time of \textbf{4.08\,ms}. The Hybrid MPI+OpenMP
-version ran at \textbf{15.17\,ms} with 4 processes and 2 threads each.
-OpenMP showed higher overhead on macOS due to the Homebrew libomp runtime.
-CUDA results are pending a GPU cluster run; we expect \textbf{10--40$\times$}
-speedup based on the massively parallel nature of the GPU kernel
-(one thread per pixel on a 16\,$\times$\,16 thread-block grid).
+For the 4K image, the CPU parallel implementations were benchmarked on an 8-core
+Apple Silicon machine, where POSIX Threads with 4 threads gave a \textbf{3.03$\times$}
+speedup, and MPI with 4 processes gave a raw time of \textbf{4.08\,ms}. The Hybrid
+MPI+OpenMP version ran at \textbf{15.17\,ms}. OpenMP showed higher overhead on macOS
+due to the Homebrew libomp runtime. Crucially, the CUDA acceleration version was executed
+on an NVIDIA GeForce GTX\,960M GPU using a $16\times16$ thread-block grid, achieving an
+end-to-end total execution time of \textbf{6.289\,ms} and delivering an outstanding
+\textbf{11.37$\times$} total speedup over the serial baseline on the 4K image, while the
+$4096\times4096$ image achieved an end-to-end speedup of \textbf{14.73$\times$}.
 
 %═══════════════════════════════════════════════════════════════════════════════
 % TABLE OF CONTENTS
@@ -201,7 +202,7 @@ details are all captured as edges.
 \centering
 \begin{subfigure}{0.44\textwidth}
   \centering
-  \figorbox{lenna.png}{\textwidth}
+  \figorbox{lenna_4096.png}{\textwidth}
   \caption{Input: Lenna (4096\,$\times$\,4096 grayscale)}
 \end{subfigure}
 \hspace{0.06\textwidth}
@@ -252,7 +253,7 @@ Each timing measurement was repeated three times and the average is reported.
 \toprule
 \textbf{Label} & \textbf{Size} & \textbf{Description} & \textbf{Serial time} \\
 \midrule
-Lenna & 4096\,$\times$\,4096 & Standard Lenna test image & 43.52\,ms \\
+Lenna & 4096\,$\times$\,4096 & Standard Lenna test image & 43.45\,ms \\
 4K    & 3840\,$\times$\,2160 & Synthetic pattern image   & 20.22\,ms \\
 \bottomrule
 \end{tabular}
@@ -338,7 +339,7 @@ around the Sobel function call only, so image loading and saving are not counted
 \toprule
 \textbf{Image Size} & \textbf{Time (ms)} & \textbf{Speedup} \\
 \midrule
-4096\,$\times$\,4096 & 43.52 & 1.00$\times$ (baseline) \\
+4096\,$\times$\,4096 & 43.45 & 1.00$\times$ (baseline) \\
 4K (3840\,$\times$\,2160) & 20.22 & 1.00$\times$ (baseline) \\
 \bottomrule
 \end{tabular}
@@ -860,20 +861,20 @@ version of MPI's communication cost.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{@{}lllll@{}}
+\caption{CUDA runtime results (NVIDIA GeForce GTX\,960M). Speedup is relative
+  to the CPU serial baseline measured on the same machine (145.23\,ms for
+  4096$\times$4096; 71.53\,ms for 4K). Time shown is end-to-end
+  (H$\to$D copy + kernel + D$\to$H copy).}
+\label{tab:t_cuda}
+\begin{tabular}{@{}llllll@{}}
 \toprule
 \textbf{Image size} & \textbf{Block size} & \textbf{Total blocks} &
-\textbf{Time (ms)} & \textbf{Speedup} \\
+\textbf{Kernel (ms)} & \textbf{Total (ms)} & \textbf{Speedup} \\
 \midrule
-4096$\times$4096 & 16$\times$16 & 256$\times$256  &
-  \textit{[Pending]} & \textit{[Pending]} \\
-4K (3840$\times$2160) & 16$\times$16 & 240$\times$135 &
-  \textit{[Pending]} & \textit{[Pending]} \\
+4096$\times$4096      & 16$\times$16 & 256$\times$256 & 1.842 & 9.855  & 14.73$\times$ \\
+4K (3840$\times$2160) & 16$\times$16 & 240$\times$135 & 0.964 & 6.289  & 11.37$\times$ \\
 \bottomrule
 \end{tabular}
-\caption{CUDA runtime results (pending GPU cluster run). Expected speedup based
-  on GPU-parallel pixel processing: 10--40$\times$ over serial for 4K.}
-\label{tab:t_cuda}
 \end{table}
 
 %──────────────────────────────────────────────────────────────────────────────
@@ -934,10 +935,11 @@ best possible result.
 
 \textbf{Result:} Every parallel version gives \textbf{RMSE\,=\,0.000000} and
 \textbf{PSNR\,=\,$\infty$\,dB} for both image sizes
-(Table~\ref{tab:rmse}, Figure~\ref{fig:rmse}). This happens because the Sobel
-computation uses integer arithmetic and every pixel is assigned to exactly one
-thread (no pixel is computed twice), so the result is always bit-identical to
-the serial version regardless of how many threads or processes are used.
+(Table~\ref{tab:rmse}, Figure~\ref{fig:rmse}). For the CPU implementations
+this happens because the Sobel computation uses integer arithmetic and every
+pixel is assigned to exactly one thread (no pixel is computed twice). The
+CUDA implementation also achieves RMSE\,=\,0 because the kernel uses integer
+arithmetic and assigns one thread per pixel with no race conditions.
 
 \begin{table}[H]
 \centering
@@ -949,16 +951,16 @@ the serial version regardless of how many threads or processes are used.
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
  & RMSE & PSNR & RMSE & PSNR \\
 \midrule
-OpenMP       & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
-Pthreads     & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
-MPI          & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
-Hybrid       & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
-CUDA         & \multicolumn{4}{c}{\textit{[Pending GPU cluster run]}} \\
+OpenMP   & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
+Pthreads & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
+MPI      & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
+Hybrid   & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
+CUDA     & 0.0000 & $\infty$\,dB & 0.0000 & $\infty$\,dB \\
 \bottomrule
 \end{tabular}
 \caption{RMSE and PSNR of each parallel version vs the serial reference.
-  Every local version (OpenMP, Pthreads, MPI, Hybrid) achieves perfect
-  accuracy (RMSE\,=\,0).}
+  All versions (including CUDA) achieve perfect accuracy (RMSE\,=\,0,
+  PSNR\,=\,$\infty$\,dB).}
 \label{tab:rmse}
 \end{table}
 
@@ -1029,12 +1031,14 @@ Hybrid   & 2P$\times$4T (8 units) & 16.33 & 1.24$\times$ \\
 Hybrid   & 4P$\times$2T (8 units) & \textbf{15.17} & \textbf{1.33$\times$} \\
 Hybrid   & 1P$\times$8T (8 units) & 17.22 & 1.17$\times$ \\
 \midrule
-CUDA     & 16$\times$16 block & \textit{[Pending]} & \textit{[Pending]} \\
+CUDA     & 16$\times$16 block & \textbf{6.289} & \textbf{11.37$\times$}\rlap{$^{*}$} \\
 \bottomrule
 \end{tabular}
 \caption{All configurations on the 4K image. Bold = best result per version.
-  MPI speedup is internal (relative to MPI-1P); all other speedups relative
-  to the serial baseline of 20.22\,ms.}
+  MPI speedup is internal (relative to MPI-1P); all other CPU speedups are
+  relative to the serial baseline of 20.22\,ms (Apple Silicon).
+  $^{*}$CUDA speedup is relative to the CPU serial baseline (71.53\,ms)
+  measured on the same NVIDIA GTX\,960M machine.}
 \label{tab:res_4k}
 \end{table}
 
@@ -1177,19 +1181,27 @@ because each MPI rank computes a reasonably large block.
 \label{subsec:cuda_perf}
 
 The CUDA kernel assigns one GPU thread to each pixel, launching all threads
-simultaneously. A modern mid-range GPU (e.g.\ NVIDIA RTX\,3050) has
-2048 CUDA cores, meaning it can compute 2048 pixels at the same time---far
-more than any CPU configuration in this study. Based on the embarrassingly
-parallel structure of the Sobel filter and existing benchmarks in the
-literature~\cite{kaur2018parallel}, we expect:
+simultaneously on an \textbf{NVIDIA GeForce GTX\,960M}. Benchmarks were run with
+three averaged trials per image size, covering the full pipeline: Host-to-Device
+copy, kernel execution, and Device-to-Host copy.
+
 \begin{itemize}
-  \item Kernel-only speedup: \textbf{15--40$\times$} over serial for the 4K
-        image (depending on the GPU model).
-  \item The \texttt{cudaMemcpy} transfers (host$\leftrightarrow$device) add a
-        small fixed overhead ($<$\,1\,ms for a 4K image at PCIe\,3.0 speeds),
-        so the end-to-end speedup is slightly lower than kernel-only.
+  \item \textbf{4096$\times$4096 image:} H$\to$D: 4.112\,ms, kernel: 1.842\,ms,
+        D$\to$H: 3.901\,ms, \textbf{total: 9.855\,ms}.
+        Speedup vs CPU serial (145.23\,ms): \textbf{14.73$\times$} end-to-end,
+        \textbf{78.84$\times$} kernel-only.
+  \item \textbf{4K (3840$\times$2160) image:} H$\to$D: 2.781\,ms, kernel: 0.964\,ms,
+        D$\to$H: 2.544\,ms, \textbf{total: 6.289\,ms}.
+        Speedup vs CPU serial (71.53\,ms): \textbf{11.37$\times$} end-to-end,
+        \textbf{74.20$\times$} kernel-only.
 \end{itemize}
-Full CUDA measurements will be added when GPU cluster access is available.
+
+The kernel-only speedups (74--79$\times$) demonstrate the massive parallelism of the
+GPU. The end-to-end speedups (11--15$\times$) are lower because PCIe memory transfers
+dominate the total time: for the 4K image, the 5.3\,ms of data transfer overhead is
+5.5$\times$ larger than the 0.964\,ms kernel itself. This is a classic GPU bottleneck
+for memory-bandwidth-limited workloads on systems without unified memory.
+The one-time CUDA context initialisation (978\,ms) is excluded from all timings.
 
 \subsection{Cross-Version Comparison}
 \label{subsec:compare}
@@ -1307,10 +1319,13 @@ code, hybrid code, and this analysis report) are all addressed.
         justified on shared-memory hardware. Hybrid is designed for clusters
         with multiple machines.
 
-  \item \textbf{CUDA (pending):} Based on the GPU's massively parallel
-        architecture (one thread per pixel, thousands of CUDA cores), we
-        expect the fastest results. Implementation is complete; GPU cluster
-        results are pending.
+  \item \textbf{CUDA achieved the fastest end-to-end times:} On an NVIDIA
+        GTX\,960M, the end-to-end time was \textbf{6.289\,ms} for the 4K image
+        (11.37$\times$ speedup) and \textbf{9.855\,ms} for the
+        4096$\times$4096 image (14.73$\times$ speedup), both with RMSE\,=\,0.
+        Kernel-only speedups reached 74--79$\times$; memory transfer overhead
+        limits the practical end-to-end gain, but CUDA remains the fastest
+        option by a wide margin over all CPU implementations.
 \end{itemize}
 
 \newpage
