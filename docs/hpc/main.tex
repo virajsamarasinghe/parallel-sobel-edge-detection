@@ -242,10 +242,12 @@ The goals of this project are to:
 \subsection{Experimental Setup}
 \label{sec:setup}
 
-All experiments were run on an Apple Silicon machine (8 physical cores,
-8\,GB RAM, macOS). MPI version: Open MPI 5.0.9. Compiler: Apple Clang
-with \texttt{-O3}. Two image sizes were tested (Table~\ref{tab:datasets}).
-Each timing measurement was repeated three times and the average is reported.
+CPU experiments (Serial, OpenMP, Pthreads, MPI, Hybrid) were run on an
+Apple Silicon machine (8 physical cores, 8\,GB RAM, macOS), using Open MPI
+5.0.9 and Apple Clang with \texttt{-O3}. CUDA experiments were run on a
+separate machine with an NVIDIA GeForce GTX\,960M GPU (CUDA 12). Two image
+sizes were tested (Table~\ref{tab:datasets}). Each timing measurement was
+repeated three times and the average is reported.
 
 \begin{table}[H]
 \centering
@@ -1061,7 +1063,7 @@ initialisation cost even with one thread (61.23\,ms vs 20.22\,ms for serial).
 \end{figure}
 
 For the 4096$\times$4096 Lenna image (Figure~\ref{fig:speedup_512}), the serial
-baseline is 43.52\,ms. Despite the large image, OpenMP on macOS still runs
+baseline is 43.45\,ms. Despite the large image, OpenMP on macOS still runs
 slower than serial at all thread counts due to the fixed libomp initialisation
 overhead---even at this size, the overhead cost exceeds the per-pixel computation
 savings. Pthreads, however, achieves meaningful speedup (2.72$\times$ at 4 threads),
@@ -1073,7 +1075,7 @@ inherent limitation of parallelism for this workload. This teaches us that
 \centering
 \figorbox{speedup_512.png}{0.72\textwidth}
 \caption{Speedup vs thread count on the 4096$\times$4096 Lenna image
-  (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on
+  (serial baseline: 43.45\,ms). OpenMP libomp initialisation overhead on
   macOS dominates at all thread counts; Pthreads scales well.}
 \label{fig:speedup_512}
 \end{figure}
@@ -1216,8 +1218,8 @@ parallelism.
 \begin{figure}[H]
 \centering
 \figorbox{exec_time_comparison_4k.png}{0.82\textwidth}
-\caption{Best execution time per implementation on the 4K image. CUDA result
-  is pending; it is expected to be the fastest by a large margin.}
+\caption{Best execution time per implementation on the 4K image. CUDA was
+  run on an NVIDIA GeForce GTX\,960M (end-to-end including PCIe transfers).}
 \label{fig:compare}
 \end{figure}
 
@@ -1232,10 +1234,12 @@ OpenMP (8T)    & 13.80 & 1.47$\times$ \\
 Pthreads (4T)  & 6.67  & 3.03$\times$ \\
 MPI (4P)       & 4.08  & ---\,(diff.\ timing) \\
 Hybrid (4P$\times$2T) & 15.17 & 1.33$\times$ \\
-CUDA           & \textit{Pending} & \textit{Pending} \\
+CUDA (GTX\,960M) & 6.289 & 11.37$\times$\rlap{$^{*}$} \\
 \bottomrule
 \end{tabular}
-\caption{Best result per implementation on the 4K image.}
+\caption{Best result per implementation on the 4K image.
+  $^{*}$CUDA speedup is vs the CPU serial baseline (71.53\,ms) on the
+  same NVIDIA GTX\,960M machine; all other speedups vs Apple Silicon serial (20.22\,ms).}
 \label{tab:bestspeedup}
 \end{table}
 
@@ -1353,18 +1357,19 @@ measured results.
 
 \subsection{Limitations and Future Work}
 
-This study was done on a single Apple Silicon machine with 8 cores and no
-NVIDIA GPU. Extensions that would give more complete results include:
+The CPU benchmarks were run on a single Apple Silicon machine (8 cores, macOS)
+and the CUDA benchmarks on an NVIDIA GeForce GTX\,960M. Extensions that would
+give more complete results include:
 \begin{itemize}
-  \item Running all tests (especially CUDA and Hybrid) on a Linux HPC cluster
-        with an NVIDIA GPU.
+  \item Running the Hybrid MPI+OpenMP version on a multi-node Linux HPC cluster,
+        where MPI inter-node communication would justify the dual-overhead design.
   \item Testing on a real high-resolution photo (e.g.\ a 4K camera image)
-        instead of a synthetic pattern.
+        instead of a synthetic pattern, to validate results on natural image content.
   \item Adding a \textbf{shared memory} optimisation to the CUDA kernel using
-        CUDA shared memory tiles (16$\times$16 tiles in \texttt{\_\_shared\_\_}
-        memory) to reduce global memory reads from 9 to closer to 1 per pixel.
+        16$\times$16 tiles in \texttt{\_\_shared\_\_} memory to reduce global
+        memory reads from 9 to closer to 1 per pixel, further boosting kernel speedup.
   \item Comparing with more image sizes (e.g.\ 1080p, 8K) to draw a full
-        scaling curve.
+        scaling curve across all implementations.
 \end{itemize}
 
 \hyperref[contents]{\small $\uparrow$ Back to Contents}

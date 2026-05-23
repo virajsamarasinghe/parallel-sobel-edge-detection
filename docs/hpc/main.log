@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.4)  23 MAY 2026 21:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.4)  23 MAY 2026 21:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -847,7 +847,7 @@ MPI, Hy-brid
 NG copy)>] [5] [6
 
 ] [7] [8] [9] [10]
-Overfull \hbox (5.48698pt too wide) in paragraph at lines 869--878
+Overfull \hbox (5.48698pt too wide) in paragraph at lines 871--880
  [][] 
  []
 
@@ -855,7 +855,7 @@ Overfull \hbox (5.48698pt too wide) in paragraph at lines 869--878
 <diagram/rmse_bar.png, id=277, 469.755pt x 289.08pt>
 File: diagram/rmse_bar.png Graphic file (type png)
 <use diagram/rmse_bar.png>
-Package pdftex.def Info: diagram/rmse_bar.png  used on input line 969.
+Package pdftex.def Info: diagram/rmse_bar.png  used on input line 971.
 (pdftex.def)             Requested size: 317.07614pt x 195.12498pt.
  [13
 
@@ -865,36 +865,36 @@ Package pdftex.def Info: diagram/rmse_bar.png  used on input line 969.
 <diagram/speedup_shared_4k.png, id=304, 433.62pt x 289.08pt>
 File: diagram/speedup_shared_4k.png Graphic file (type png)
 <use diagram/speedup_shared_4k.png>
-Package pdftex.def Info: diagram/speedup_shared_4k.png  used on input line 1057
+Package pdftex.def Info: diagram/speedup_shared_4k.png  used on input line 1059
 .
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
  [16]
 <diagram/speedup_512.png, id=312, 433.62pt x 289.08pt>
 File: diagram/speedup_512.png Graphic file (type png)
 <use diagram/speedup_512.png>
-Package pdftex.def Info: diagram/speedup_512.png  used on input line 1074.
+Package pdftex.def Info: diagram/speedup_512.png  used on input line 1076.
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
  [17 <./diagram/speedup_shared_4k.png> <./diagram/speedup_512.png>]
 <diagram/efficiency_4k.png, id=321, 433.62pt x 289.08pt>
 File: diagram/efficiency_4k.png Graphic file (type png)
 <use diagram/efficiency_4k.png>
-Package pdftex.def Info: diagram/efficiency_4k.png  used on input line 1094.
+Package pdftex.def Info: diagram/efficiency_4k.png  used on input line 1096.
 (pdftex.def)             Requested size: 326.13744pt x 217.43582pt.
  [18 <./diagram/efficiency_4k.png>]
 <diagram/mpi_time_4k.png, id=332, 397.485pt x 289.08pt>
 File: diagram/mpi_time_4k.png Graphic file (type png)
 <use diagram/mpi_time_4k.png>
-Package pdftex.def Info: diagram/mpi_time_4k.png  used on input line 1147.
+Package pdftex.def Info: diagram/mpi_time_4k.png  used on input line 1149.
 (pdftex.def)             Requested size: 217.42265pt x 158.12993pt.
 <diagram/mpi_speedup_4k.png, id=333, 397.485pt x 289.08pt>
 File: diagram/mpi_speedup_4k.png Graphic file (type png)
 <use diagram/mpi_speedup_4k.png>
-Package pdftex.def Info: diagram/mpi_speedup_4k.png  used on input line 1152.
+Package pdftex.def Info: diagram/mpi_speedup_4k.png  used on input line 1154.
 (pdftex.def)             Requested size: 217.42265pt x 158.12993pt.
 <diagram/hybrid_time_4k.png, id=335, 433.62pt x 289.08pt>
 File: diagram/hybrid_time_4k.png Graphic file (type png)
 <use diagram/hybrid_time_4k.png>
-Package pdftex.def Info: diagram/hybrid_time_4k.png  used on input line 1174.
+Package pdftex.def Info: diagram/hybrid_time_4k.png  used on input line 1176.
 (pdftex.def)             Requested size: 317.07614pt x 211.39275pt.
 
 [19 <./diagram/mpi_time_4k.png> <./diagram/mpi_speedup_4k.png>]
@@ -902,7 +902,7 @@ Package pdftex.def Info: diagram/hybrid_time_4k.png  used on input line 1174.
 File: diagram/exec_time_comparison_4k.png Graphic file (type png)
 <use diagram/exec_time_comparison_4k.png>
 Package pdftex.def Info: diagram/exec_time_comparison_4k.png  used on input lin
-e 1218.
+e 1220.
 (pdftex.def)             Requested size: 371.43698pt x 238.78452pt.
  [20 <./diagram/hybrid_time_4k.png>] [21 <./diagram/exec_time_comparison_4k.png
 >] [22] [23
@@ -945,7 +945,7 @@ exmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2024/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2024/texmf
 -dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (27 pages, 21981745 bytes).
+Output written on main.pdf (27 pages, 21981979 bytes).
 PDF statistics:
  496 PDF objects out of 1000 (max. 8388607)
  401 compressed objects within 5 object streams

@@ -81,8 +81,8 @@
 \newlabel{subsec:speedup}{{4.2}{16}{Speedup Analysis}{subsection.4.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Speedup vs thread count for OpenMP and Pthreads on the 4K image. The dashed line is ideal (linear) scaling.}}{17}{figure.caption.21}\protected@file@percent }
 \newlabel{fig:speedup_4k}{{9}{17}{Speedup vs thread count for OpenMP and Pthreads on the 4K image. The dashed line is ideal (linear) scaling}{figure.caption.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well.}}{17}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:speedup_512}{{10}{17}{Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.52\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.45\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well.}}{17}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:speedup_512}{{10}{17}{Speedup vs thread count on the 4096$\times $4096 Lenna image (serial baseline: 43.45\,ms). OpenMP libomp initialisation overhead on macOS dominates at all thread counts; Pthreads scales well}{figure.caption.22}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Parallel Efficiency}{18}{subsection.4.3}\protected@file@percent }
 \newlabel{subsec:efficiency}{{4.3}{18}{Parallel Efficiency}{subsection.4.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Parallel efficiency (speedup\,/\,threads) for OpenMP and Pthreads on the 4K image. Pthreads stays more efficient due to lower runtime overhead.}}{18}{figure.caption.23}\protected@file@percent }
@@ -103,10 +103,10 @@
 \newlabel{subsec:cuda_perf}{{4.7}{20}{CUDA GPU Performance}{subsection.4.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Cross-Version Comparison}{20}{subsection.4.8}\protected@file@percent }
 \newlabel{subsec:compare}{{4.8}{20}{Cross-Version Comparison}{subsection.4.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Best execution time per implementation on the 4K image. CUDA result is pending; it is expected to be the fastest by a large margin.}}{21}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:compare}{{14}{21}{Best execution time per implementation on the 4K image. CUDA result is pending; it is expected to be the fastest by a large margin}{figure.caption.27}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Best result per implementation on the 4K image.}}{21}{table.caption.28}\protected@file@percent }
-\newlabel{tab:bestspeedup}{{13}{21}{Best result per implementation on the 4K image}{table.caption.28}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Best execution time per implementation on the 4K image. CUDA was run on an NVIDIA GeForce GTX\,960M (end-to-end including PCIe transfers).}}{21}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:compare}{{14}{21}{Best execution time per implementation on the 4K image. CUDA was run on an NVIDIA GeForce GTX\,960M (end-to-end including PCIe transfers)}{figure.caption.27}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Best result per implementation on the 4K image. $^{*}$CUDA speedup is vs the CPU serial baseline (71.53\,ms) on the same NVIDIA GTX\,960M machine; all other speedups vs Apple Silicon serial (20.22\,ms).}}{21}{table.caption.28}\protected@file@percent }
+\newlabel{tab:bestspeedup}{{13}{21}{Best result per implementation on the 4K image. $^{*}$CUDA speedup is vs the CPU serial baseline (71.53\,ms) on the same NVIDIA GTX\,960M machine; all other speedups vs Apple Silicon serial (20.22\,ms)}{table.caption.28}{}}
 \citation{amdahl1967validity}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.9}Amdahl's Law Analysis}{22}{subsection.4.9}\protected@file@percent }
 \newlabel{subsec:amdahl}{{4.9}{22}{Amdahl's Law Analysis}{subsection.4.9}{}}
