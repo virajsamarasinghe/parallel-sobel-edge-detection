@@ -1,5 +1,6 @@
-# Use NVIDIA CUDA development base image
+# Use NVIDIA CUDA development base image (nvidia/cuda:12.2.0)
 FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
+
 
 # Avoid interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive

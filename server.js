@@ -147,10 +147,27 @@ app.post('/api/process', upload.single('image'), async (req, res) => {
         const { error, stdout, stderr } = await runCommand(config.cmd);
         
         const timeMs = config.parseTime(stdout);
-        const hasCudaError = config.name === 'cuda' && (stderr.includes('CUDA') || stdout.includes('CUDA') || stdout.includes('failed') || !fs.existsSync(getOutputPath('cuda')));
+        const outputPath = getOutputPath(config.name);
+        
+        // A run is successful if the command exited 0, parsed execution time, and output image exists
+        const fileExists = fs.existsSync(outputPath);
+        const baseSuccess = !error && timeMs !== null && fileExists;
+        
+        let emulated = false;
+        let success = baseSuccess;
+        
+        // For CUDA, if we succeeded but printed warning logs of fallback, mark it as emulated
+        if (config.name === 'cuda' && baseSuccess) {
+            const hasWarning = stderr.includes('WARNING') || stdout.includes('WARNING') || 
+                              stderr.includes('fallback') || stdout.includes('fallback') ||
+                              stderr.includes('failed') || stdout.includes('failed');
+            if (hasWarning) {
+                emulated = true;
+            }
+        }
 
         // If we are on serial, parse width and height
-        if (config.name === 'serial') {
+        if (config.name === 'serial' && baseSuccess) {
             const dimMatch = stdout.match(/Loaded image:\s+(\d+)x(\d+)/);
             if (dimMatch) {
                 imageWidth = parseInt(dimMatch[1]);
@@ -158,11 +175,12 @@ app.post('/api/process', upload.single('image'), async (req, res) => {
             }
         }
 
-        if (error || (config.name === 'cuda' && hasCudaError) || timeMs === null) {
+        if (!success) {
             console.error(`Failed to run ${config.name}:`, error || stderr || stdout);
             results.methods[config.name] = {
                 displayName: config.displayName,
                 success: false,
+                emulated: false,
                 error: (stderr || stdout || (error ? error.message : 'Unknown error')).trim(),
                 timeMs: null,
                 speedup: null,
@@ -171,11 +189,13 @@ app.post('/api/process', upload.single('image'), async (req, res) => {
         } else {
             const metrics = config.parseMetrics ? config.parseMetrics(stdout) : {};
             results.methods[config.name] = {
-                displayName: config.displayName,
+                displayName: config.displayName + (emulated ? " (CPU Emulated)" : ""),
                 success: true,
+                emulated: emulated,
                 timeMs: timeMs,
                 speedup: null, // calculated below
                 outputUrl: getWebUrl(config.name),
+                error: emulated ? (stderr || stdout).trim() : null,
                 ...metrics
             };
         }

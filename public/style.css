@@ -614,6 +614,11 @@ body {
     border-color: rgba(239, 68, 68, 0.2);
 }
 
+.cuda-status-card.warning {
+    background: rgba(245, 158, 11, 0.03);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
 .cuda-status-card.success {
     background: rgba(16, 185, 129, 0.03);
     border-color: rgba(16, 185, 129, 0.2);

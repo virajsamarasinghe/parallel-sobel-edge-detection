@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdint>
+#include "sobel.h"
 
 // CUDA kernel to apply Sobel filter on GPU
 __global__ void sobel_cuda_kernel(const uint8_t* __restrict__ input,
@@ -59,13 +60,17 @@ void sobel_cuda(const std::vector<uint8_t>& input,
     cudaError_t err = cudaMalloc(&d_input, size);
     if (err != cudaSuccess) {
         std::cerr << "CUDA malloc failed for input: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
+        sobel_serial(input, output, width, height);
         return;
     }
 
     err = cudaMalloc(&d_output, size);
     if (err != cudaSuccess) {
         std::cerr << "CUDA malloc failed for output: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
         cudaFree(d_input);
+        sobel_serial(input, output, width, height);
         return;
     }
 
@@ -73,8 +78,10 @@ void sobel_cuda(const std::vector<uint8_t>& input,
     err = cudaMemcpy(d_input, input.data(), size, cudaMemcpyHostToDevice);
     if (err != cudaSuccess) {
         std::cerr << "CUDA memcpy H2D failed: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
         cudaFree(d_input);
         cudaFree(d_output);
+        sobel_serial(input, output, width, height);
         return;
     }
 
@@ -93,8 +100,10 @@ void sobel_cuda(const std::vector<uint8_t>& input,
     err = cudaGetLastError();
     if (err != cudaSuccess) {
         std::cerr << "CUDA kernel launch failed: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
         cudaFree(d_input);
         cudaFree(d_output);
+        sobel_serial(input, output, width, height);
         return;
     }
 
@@ -102,8 +111,10 @@ void sobel_cuda(const std::vector<uint8_t>& input,
     err = cudaDeviceSynchronize();
     if (err != cudaSuccess) {
         std::cerr << "CUDA device synchronize failed: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
         cudaFree(d_input);
         cudaFree(d_output);
+        sobel_serial(input, output, width, height);
         return;
     }
 
@@ -111,9 +122,15 @@ void sobel_cuda(const std::vector<uint8_t>& input,
     err = cudaMemcpy(output.data(), d_output, size, cudaMemcpyDeviceToHost);
     if (err != cudaSuccess) {
         std::cerr << "CUDA memcpy D2H failed: " << cudaGetErrorString(err) << std::endl;
+        std::cerr << "WARNING: Falling back to CPU Sobel execution." << std::endl;
+        cudaFree(d_input);
+        cudaFree(d_output);
+        sobel_serial(input, output, width, height);
+        return;
     }
 
     // Free device memory
     cudaFree(d_input);
     cudaFree(d_output);
 }
+

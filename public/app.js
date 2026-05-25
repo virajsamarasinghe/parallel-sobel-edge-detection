@@ -365,11 +365,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // CUDA notice updating based on result
         const cudaData = data.methods['cuda'];
         if (cudaData) {
-            if (cudaData.success) {
+            if (cudaData.success && !cudaData.emulated) {
                 cudaStatusCard.className = 'cuda-status-card success';
                 cudaCardTitle.textContent = 'CUDA GPU Accelerated: Active';
                 cudaStatusBody.innerHTML = `Sobel filter successfully executed on host CUDA core in <strong>${cudaData.timeMs.toFixed(2)} ms</strong>. 
                 Speedup is <strong>${cudaData.speedup ? cudaData.speedup.toFixed(2) + 'x' : '1.00x'}</strong>. Fully parallelized via local GPU threads.`;
+            } else if (cudaData.success && cudaData.emulated) {
+                cudaStatusCard.className = 'cuda-status-card warning';
+                cudaCardTitle.textContent = 'CUDA GPU Accelerated: CPU Fallback Emulated';
+                cudaStatusBody.innerHTML = `CUDA compilation succeeded inside Docker, but runtime driver/memory allocation failed (typical on macOS/VMs without NVIDIA GPUs).
+                <br><strong>The system gracefully fell back to CPU execution.</strong> You can still select and visualize the output image.
+                <br><br><strong>C++ stdout/stderr debug logs:</strong>
+                <pre>${escapeHtml(cudaData.error || 'Unknown warning details')}</pre>`;
             } else {
                 cudaStatusCard.className = 'cuda-status-card error';
                 cudaCardTitle.textContent = 'CUDA GPU Execution: Failed/Not Available';
